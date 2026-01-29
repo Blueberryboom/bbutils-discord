@@ -7,4 +7,4 @@ RUN npm install --omit=dev
 
 COPY . .
 
-CMD ["node", "index.js"]
+CMD ["node", "--trace-uncaught", "--trace-warnings", "index.js"]
