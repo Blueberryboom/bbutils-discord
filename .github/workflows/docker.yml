@@ -39,7 +39,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           push: true
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
           tags: |
             ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}:latest
             ghcr.io/${{ env.OWNER_LC }}/${{ github.event.repository.name }}:${{ github.event.release.tag_name }}
