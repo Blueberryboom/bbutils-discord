@@ -1,3 +1,6 @@
+console.log("Node started");
+console.log("Token present:", !!process.env.DISCORD_TOKEN);
+
 console.log("Bot starting...");
 
 const { Client, GatewayIntentBits, Events } = require("discord.js");
