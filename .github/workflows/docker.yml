@@ -28,5 +28,5 @@ jobs:
         with:
           push: true
           tags: |
-            ghcr.io/${{ github.repository }}:${{ github.ref_name }}
-            ghcr.io/${{ github.repository }}:latest
+                 ghcr.io/blueberryboom/bbutils-discord:${{ github.ref_name }}
+                 ghcr.io/blueberryboom/bbutils-discord:latest
