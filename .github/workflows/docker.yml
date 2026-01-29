@@ -32,5 +32,4 @@ jobs:
           push: true
           tags: |
             ghcr.io/${{ env.OWNER_LC }}/bbutils-discord:${{ github.ref_name }}
-            ghcr.io/${{ env.OWNER_LC }}/bbutils-discord:
-            latest
+            ghcr.io/${{ env.OWNER_LC }}/bbutils-discord:latest
