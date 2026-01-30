@@ -33,7 +33,7 @@ client.on(Events.InteractionCreate, async interaction => {
   if (interaction.commandName === "ping") {
     const sent = await interaction.reply({
       content: "🏓 Pinging...",
-      fetchReply: true,
+      withResponse: true,
     });
 
     const latency =
