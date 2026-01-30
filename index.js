@@ -40,7 +40,7 @@ client.on(Events.InteractionCreate, async interaction => {
       sent.createdTimestamp - interaction.createdTimestamp;
 
     await interaction.editReply(
-      `🏓 Pong! ${latency}ms`
+      `🏓 Pong! It took ${latency}ms for BBUtils to reply to this command.`
     );
   }
 });
