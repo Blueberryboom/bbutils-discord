@@ -22,9 +22,8 @@ module.exports = {
       .addFields(
         { name: "🏓 Latency", value: `${latency}ms`, inline: true },
         { name: "⏱️ Uptime", value: `${hours}h ${minutes}m ${seconds}s`, inline: true },
-        { name: "📦 Version", value: `v${version}`, inline: true }
       )
-      .setFooter({ text: "BlueberryTeam Utilities" })
+      .setFooter({ text: "BBUtils - Hosted by the Blueberry Network" })
       .setTimestamp();
 
     await interaction.reply({ embeds: [embed] });
