@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const { version } = require("../package.json");
+const { version } = require("../../package.json");
 
 const startTime = Date.now();
 
