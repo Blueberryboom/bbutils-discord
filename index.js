@@ -1,47 +1,57 @@
 console.log("Bot starting...");
 
+const fs = require("fs");
+const path = require("path");
 const {
   Client,
   GatewayIntentBits,
-  SlashCommandBuilder,
   Events,
+  Collection,
 } = require("discord.js");
 
 const client = new Client({
   intents: [GatewayIntentBits.Guilds],
 });
 
-client.once(Events.ClientReady, async () => {
-  console.log(`[SUCCESS] Logged in as ${client.user.tag} YEY`);
+client.commands = new Collection();
 
-  // Register /ping command (global)
-  const pingCommand = new SlashCommandBuilder()
-    .setName("ping")
-    .setDescription("Replies with latency in ms");
+const commandsPath = path.join(__dirname, "commands");
+const commandFiles = fs
+  .readdirSync(commandsPath)
+  .filter(file => file.endsWith(".js"));
+
+for (const file of commandFiles) {
+  const command = require(`./commands/${file}`);
+  client.commands.set(command.data.name, command);
+}
+
+client.once(Events.ClientReady, async () => {
+  console.log(`[SUCCESS] Logged in as ${client.user.tag}`);
 
   try {
-    await client.application.commands.create(pingCommand);
-    console.log("✅ /ping command registered");
+    await client.application.commands.set(
+      client.commands.map(cmd => cmd.data)
+    );
+    console.log("✅ Slash commands registered");
   } catch (err) {
-    console.error("❌ Failed to register /ping:", err);
+    console.error("❌ Failed to register commands:", err);
   }
 });
 
 client.on(Events.InteractionCreate, async interaction => {
   if (!interaction.isChatInputCommand()) return;
 
-  if (interaction.commandName === "ping") {
-    const sent = await interaction.reply({
-      content: "🏓 Pinging...",
-      withResponse: true,
+  const command = client.commands.get(interaction.commandName);
+  if (!command) return;
+
+  try {
+    await command.execute(interaction, client);
+  } catch (err) {
+    console.error(err);
+    await interaction.reply({
+      content: "❌ Error running this command",
+      ephemeral: true,
     });
-
-    const latency =
-      sent.createdTimestamp - interaction.createdTimestamp;
-
-    await interaction.editReply(
-      `🏓 Pong! It took ${latency}ms for BBUtils to reply to this command.`
-    );
   }
 });
 
