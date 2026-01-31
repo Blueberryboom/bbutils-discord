@@ -1,6 +1,6 @@
 {
   "name": "bbutils-discord",
-  "version": "2026.1.0b8",
+  "version": "2026.1.0b8d",
   "main": "index.js",
   "dependencies": {
     "discord.js": "^14.14.1"
