@@ -8,7 +8,7 @@ module.exports = {
 
   async execute(interaction) {
     const embed = new EmbedBuilder()
-      .setTitle("♥️ BBUtils")
+      .setTitle("♥️ Blueberry Utils")
       .setDescription("A cool utility bot powered by the Blueberry Network!")
       .setColor(0x5865F2) // Discord blurple
       .addFields(
