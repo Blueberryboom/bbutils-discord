@@ -23,7 +23,9 @@ module.exports = {
         { name: "🏓 Latency", value: `${latency}ms`, inline: true },
         { name: "⏱️ Uptime", value: `${hours}h ${minutes}m ${seconds}s`, inline: true },
       )
-      .setFooter({ text: "BBUtils v${pkg.version} • Powered by blueberrynet.uk" })
+      .setFooter({
+        text: `BBUtils v${pkg.version} • Powered by blueberrynet.uk`,
+      });
       .setTimestamp();
 
     await interaction.reply({ embeds: [embed] });
