@@ -15,9 +15,9 @@ module.exports = {
         { name: "Version", value: pkg.version, inline: true },
         { name: "Node.js", value: process.version, inline: true },
         {
-          name: "Uptime",
-          value: formatUptime(process.uptime()),
-          inline: true,
+          name: "Want this bot in your own server?",
+          value: "Join the discord and let us know: https://discord.gg/sKV2ze9HQv",
+          inline: false,
         }
       )
       .setFooter({
