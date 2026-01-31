@@ -13,26 +13,47 @@ const client = new Client({
   intents: [GatewayIntentBits.Guilds],
 });
 
+// Command collection
 client.commands = new Collection();
 
-const commandsPath = path.join(__dirname, "commands");
-const commandFiles = fs
-  .readdirSync(commandsPath)
-  .filter(file => file.endsWith(".js"));
+/**
+ * Recursively load command files
+ */
+function loadCommands(dirPath) {
+  const files = fs.readdirSync(dirPath, { withFileTypes: true });
 
-for (const file of commandFiles) {
-  const command = require(`./commands/${file}`);
-  client.commands.set(command.data.name, command);
+  for (const file of files) {
+    const fullPath = path.join(dirPath, file.name);
+
+    if (file.isDirectory()) {
+      loadCommands(fullPath);
+    } else if (file.name.endsWith(".js")) {
+      const command = require(fullPath);
+
+      if (!command.data || !command.execute) {
+        console.warn(`⚠️ Skipping invalid command file: ${fullPath}`);
+        continue;
+      }
+
+      client.commands.set(command.data.name, command);
+      console.log(`📦 Loaded command: /${command.data.name}`);
+    }
+  }
 }
+
+// Load all commands
+const commandsPath = path.join(__dirname, "commands");
+loadCommands(commandsPath);
 
 client.once(Events.ClientReady, async () => {
   console.log(`[SUCCESS] Logged in as ${client.user.tag}`);
+  console.log(`📊 Total commands loaded: ${client.commands.size}`);
 
   try {
     await client.application.commands.set(
       client.commands.map(cmd => cmd.data)
     );
-    console.log("✅ Slash commands registered");
+    console.log("✅ Slash commands registered globally");
   } catch (err) {
     console.error("❌ Failed to register commands:", err);
   }
@@ -47,11 +68,19 @@ client.on(Events.InteractionCreate, async interaction => {
   try {
     await command.execute(interaction, client);
   } catch (err) {
-    console.error(err);
-    await interaction.reply({
-      content: "❌ Error running this command",
-      ephemeral: true,
-    });
+    console.error(`❌ Error executing /${interaction.commandName}:`, err);
+
+    if (interaction.replied || interaction.deferred) {
+      await interaction.followUp({
+        content: "❌ Something went wrong while running this command.",
+        ephemeral: true,
+      });
+    } else {
+      await interaction.reply({
+        content: "❌ Something went wrong while running this command.",
+        ephemeral: true,
+      });
+    }
   }
 });
 
