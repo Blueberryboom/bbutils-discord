@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const pkg = require("../../package.json");
+const { version } = require("../../package.json");
 
 const startTime = Date.now();
 
@@ -24,7 +24,7 @@ module.exports = {
         { name: "⏱️ Uptime", value: `${hours}h ${minutes}m ${seconds}s`, inline: true },
       )
       .setFooter({
-        text: `BBUtils v${pkg.version} • Powered by blueberrynet.uk`,
+        text: `BBUtils v${ version } • Powered by blueberrynet.uk`,
       });
       .setTimestamp();
 
